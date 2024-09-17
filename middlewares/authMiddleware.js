@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+
 // Middleware para verificar el token JWT
 exports.verifyToken = (req, res, next) => {
     const authHeader = req.header('Authorization');
@@ -5,7 +7,6 @@ exports.verifyToken = (req, res, next) => {
         return res.status(401).json({ mensaje: 'Acceso denegado, no hay token' });
     }
 
-    // Extraer el token del formato 'Bearer <token>'
     const token = authHeader.split(' ')[1];
     if (!token) {
         return res.status(401).json({ mensaje: 'Token no válido' });
@@ -14,11 +15,14 @@ exports.verifyToken = (req, res, next) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded.user; // Establecer req.user
+        console.log('Decoded User:', req.user); // Agregar para depuración
         next();
     } catch (error) {
+        console.error('Token Error:', error); // Agregar para depuración
         res.status(401).json({ mensaje: 'Token no válido' });
     }
 };
+
 
 // Middleware para verificar si el usuario es administrador
 exports.isAdmin = (req, res, next) => {

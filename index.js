@@ -15,7 +15,7 @@ app.use(express.json());
 // Rutas
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes')); // Asegúrate de que esta ruta esté correcta
-
+app.use('/api/books', require('./routes/bookRoutes'));
 
 // Iniciar el servidor
 const PORT = process.env.PORT || 5000;
